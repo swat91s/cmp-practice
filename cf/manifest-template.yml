@@ -1,0 +1,11 @@
+---
+applications:
+- name: crudops-students${appHostSuffix}
+  path: ${build.artifactPath}
+  buildpack: java_buildpack
+  memory: 1G
+  instances: ${appInstances}
+  services:
+  - crudops-db
+  env:
+    _JAVA_OPTIONS: -Dlogging.level.org.springframework.web=${logLevel} -Dlogging.level.org.springframework.ws.client.MessageTracing.sent=${logLevel} -Dlogging.level.org.springframework.ws.client.MessageTracing.received=${logLevel}

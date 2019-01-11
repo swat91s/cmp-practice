@@ -1,0 +1,62 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'gradle-boost' version '2.0.0'
+	id 'org.springframework.boot' version '2.0.6.RELEASE'
+}
+
+
+group = 'com.ford.crudops'
+version = gradleBoost.fn.gitVersion()
+println "Build Version = ${version ?: '[none]'}"
+
+
+apply plugin: 'io.spring.dependency-management'
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.SR2'
+        mavenBom 'io.pivotal.spring.cloud:spring-cloud-services-dependencies:2.0.3.RELEASE'
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom 'com.ford.cloudnative:spring-base-dependencies:2.0.0'
+    }
+}
+
+
+dependencies {
+	//web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'io.springfox:springfox-swagger2:2.8.0'
+	implementation 'io.springfox:springfox-swagger-ui:2.8.0'
+
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	//cloud native (Dev Enablement)
+	implementation 'com.ford.cloudnative:spring-base-app'
+	implementation 'com.ford.cloudnative:spring-base-api'
+
+	//cloud connector
+	implementation 'org.springframework.boot:spring-boot-starter-cloud-connectors'
+
+	//database
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.flywaydb:flyway-core'
+	localOnly 'com.h2database:h2'
+	//implementation 'com.microsoft.sqlserver:mssql-jdbc'
+
+	//Dev-Tools
+	compile 'org.springframework.boot:spring-boot-devtools'
+
+	//other
+	compileOnly 'org.projectlombok:lombok:1.18.4'
+
+	/*********** TEST ***********/
+
+	testImplementation 'com.ford.cloudnative:spring-base-test:2.0.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+
